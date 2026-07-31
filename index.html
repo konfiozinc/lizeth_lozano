@@ -54,35 +54,29 @@
             z-index: 5;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             padding: 12px 16px;
             background: var(--navy);
             border-bottom: 1px solid rgba(201, 151, 46, 0.3);
         }
-        
-        /* CORRECCIÓN DEL LOGO: Ajuste proporcional y centrado perfecto */
         .brand-logo {
-            width: 44px; 
-            height: 44px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             border: 2px solid var(--gold);
-            object-fit: contain;
+            object-fit: cover;
             background: #ffffff;
-            padding: 2px;
             flex-shrink: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
-
         .brand-mark {
             color: var(--gold-light);
             font-size: 8.5px;
-            line-height: 1.35;
+            line-height: 1.3;
             letter-spacing: .08em;
             text-transform: uppercase;
             font-weight: 600;
         }
 
-        /* Banner Gradiente */
+        /* Banner Gradiente con Partículas */
         .main-bg {
             height: 120px;
             background: radial-gradient(circle at 15% 20%, var(--navy-3) 0%, var(--navy) 55%, #071227 100%);
@@ -93,7 +87,7 @@
         /* Sección de Contenido Principal Curvada */
         .content-section {
             background: linear-gradient(180deg, var(--navy-3) 0%, var(--navy) 100%);
-            margin-top: -45px;
+            margin-top: -30px;
             border-top-left-radius: 38px;
             border-top-right-radius: 38px;
             position: relative;
@@ -106,12 +100,12 @@
             flex-grow: 1;
         }
 
-        /* Contenedor de Foto de Perfil */
+        /* Contenedor de Foto de Perfil Corregido (Alineación perfecta y visibilidad total) */
         .profile-container {
             position: relative;
-            width: 100px;
-            height: 100px;
-            margin-top: -50px;
+            width: 115px;
+            height: 115px;
+            margin-top: 12px;
             flex-shrink: 0;
         }
 
@@ -120,6 +114,7 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+            object-position: top center;
             border: 4px solid var(--gold);
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             background: #ffffff;
@@ -169,7 +164,7 @@
             gap: 10px;
             width: 100%;
             max-width: 320px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .action-btn {
@@ -202,14 +197,14 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         .social-icons-row a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(201,151,46,0.3);
@@ -219,13 +214,13 @@
         }
         .social-icons-row a:active { transform: scale(0.9); background: var(--gold); color: var(--navy); }
 
-        /* Grilla de Íconos de Accesos Directos */
+        /* Grilla de Íconos de Accesos */
         .grid-actions {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 6px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .social-btn {
@@ -240,23 +235,23 @@
             text-decoration: none;
             cursor: pointer;
             border: 1px solid rgba(201,151,46,0.25);
-            height: 60px;
+            height: 58px;
             transition: transform 0.15s, background 0.2s;
         }
         .social-btn:active { transform: scale(0.92); background-color: rgba(201,151,46,0.2); }
 
         .social-btn-label {
-            font-size: 8.5px;
+            font-size: 8px;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 3px;
             text-align: center;
             line-height: 1.1;
         }
 
         .install-link {
             color: rgba(255, 255, 255, 0.75);
-            font-size: 9.5px;
-            margin-top: 10px;
+            font-size: 9px;
+            margin-top: 8px;
             cursor: pointer;
             text-decoration: underline;
             border: none;
@@ -268,8 +263,8 @@
             background-color: var(--gold-light);
             color: var(--navy);
             text-align: center;
-            padding: 6px;
-            font-size: 9.5px;
+            padding: 5px;
+            font-size: 9px;
             font-weight: 700;
             flex-shrink: 0;
             border-top: 1px solid var(--gold);
@@ -281,7 +276,7 @@
             color: var(--navy);
             font-size: 8.5px;
             text-align: center;
-            padding: 8px 4px;
+            padding: 7px 4px;
             font-weight: 800;
             letter-spacing: 0.5px;
             border-top: 1px solid #e2e8f0;
@@ -373,6 +368,7 @@
         .carousel-item.active { opacity: 1; }
         .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Estilos de Lista en Modales */
         .info-card {
             background: #FAF7EF;
             border-left: 3px solid var(--gold);
@@ -381,6 +377,7 @@
             margin-bottom: 8px;
             font-size: 11px;
             line-height: 1.4;
+            text-align: left;
         }
 
         .toast {
@@ -403,7 +400,7 @@
 <body>
 
     <div class="card-container">
-        <!-- TOP HEADER CON LOGO MEJORADO -->
+        <!-- TOP HEADER -->
         <div class="top-header">
             <img src="assets/img/logo.jpg" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0A1F44/C9972E?text=LL';" alt="Logo Lizeth Lozano" class="brand-logo">
             <span class="brand-mark">Confianza · Organización<br>· Resultados</span>
@@ -414,7 +411,7 @@
 
         <!-- SECCIÓN DE CONTENIDO PRINCIPAL -->
         <div class="content-section">
-            <!-- Foto de Perfil -->
+            <!-- Foto de Perfil Corregida y Centrada -->
             <div class="profile-container">
                 <img src="assets/img/perfil.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x400/0A1F44/ffffff?text=Lizeth';" alt="Lizeth Lozano, Contadora Pública" class="profile-pic">
                 <div class="verification-badge">
@@ -423,30 +420,30 @@
             </div>
 
             <!-- Nombre y Cargo -->
-            <h1 style="font-size: 19px; font-weight: 800; color: #ffffff; margin-top: 6px;">Lizeth Lozano</h1>
-            <p style="font-size: 11px; font-weight: 600; color: var(--gold-light); margin-top: 1px;">Contadora Pública</p>
+            <h1 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-top: 4px;">Lizeth Lozano</h1>
+            <p style="font-size: 10.5px; font-weight: 600; color: var(--gold-light); margin-top: 1px;">Contadora Pública</p>
 
             <div class="online-badge">
                 <span class="online-dot"></span>Disponible para atenderte ahora
             </div>
 
-            <p style="font-size: 9.5px; color: rgba(255,255,255,0.9); margin-top: 6px; font-style: italic; max-width: 280px;">"Tu tranquilidad, mi compromiso."</p>
+            <p style="font-size: 9px; color: rgba(255,255,255,0.9); margin-top: 4px; font-style: italic; max-width: 280px;">"Tu tranquilidad, mi compromiso."</p>
 
             <!-- Badges Cobertura -->
-            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; margin-top: 8px;">
-                <span style="font-size: 8px; color: #ffffff; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,151,46,0.4); padding: 2px 8px; border-radius: 12px;">Toda Colombia</span>
-                <span style="font-size: 8px; color: #ffffff; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,151,46,0.4); padding: 2px 8px; border-radius: 12px;">Exterior</span>
-                <span style="font-size: 8px; color: #ffffff; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,151,46,0.4); padding: 2px 8px; border-radius: 12px;">100% Virtual</span>
+            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; margin-top: 6px;">
+                <span style="font-size: 7.5px; color: #ffffff; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,151,46,0.4); padding: 2px 7px; border-radius: 12px;">Toda Colombia</span>
+                <span style="font-size: 7.5px; color: #ffffff; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,151,46,0.4); padding: 2px 7px; border-radius: 12px;">Exterior</span>
+                <span style="font-size: 7.5px; color: #ffffff; background: rgba(255,255,255,0.08); border: 1px solid rgba(201,151,46,0.4); padding: 2px 7px; border-radius: 12px;">100% Virtual</span>
             </div>
 
             <!-- Botones Principales de Acción -->
             <div class="action-row">
                 <a href="https://wa.me/573125580886?text=Hola%20Lizeth%2C%20vi%20tu%20tarjeta%20digital%20y%20quiero%20informaci%C3%B3n%20sobre%20tus%20servicios%20contables%20y%20tributarios." target="_blank" class="action-btn whatsapp-btn">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.31 20.6C8.75 21.42 10.36 21.88 12.04 21.88C17.5 21.88 21.95 17.43 21.95 11.97C21.95 9.31 20.95 6.8 19.05 4.9C17.15 3.00 14.65 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.71 20.28 11.92C20.28 16.46 16.65 20.21 12.04 20.21C10.56 20.21 9.14 19.83 7.89 19.11L7.55 18.93L4.44 19.8L5.33 16.78L5.15 16.44C4.38 15.09 4.00 13.57 4.00 11.97C4.00 7.43 7.63 3.67 12.04 3.67M9.23 7.53C9.07 7.53 8.81 7.59 8.61 7.9C8.41 8.21 7.81 8.78 7.81 9.84C7.81 10.9 8.63 11.92 8.79 12.11C8.95 12.31 10.16 14.11 11.96 14.82C13.76 15.54 14.34 15.36 14.73 15.3C15.12 15.24 16.03 14.73 16.22 14.19C16.42 13.65 16.42 13.2 16.32 13.04C16.22 12.88 16.06 12.78 15.82 12.66C15.58 12.54 14.53 12.04 14.33 11.96C14.13 11.88 13.99 11.82 13.85 12.06C13.71 12.3 13.28 12.8 13.14 12.96C13 13.12 12.86 13.16 12.62 13.04C12.38 12.92 11.69 12.69 10.84 11.95C10.15 11.35 9.68 10.6 9.54 10.34C9.4 10.08 9.53 9.94 9.65 9.82C9.77 9.7 9.93 9.5 10.09 9.34C10.25 9.18 10.31 9.04 10.45 8.8C10.59 8.56 10.53 8.38 10.43 8.22C10.33 8.06 9.83 7.53 9.63 7.53H9.23Z"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.31 20.6C8.75 21.42 10.36 21.88 12.04 21.88C17.5 21.88 21.95 17.43 21.95 11.97C21.95 9.31 20.95 6.8 19.05 4.9C17.15 3.00 14.65 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.71 20.28 11.92C20.28 16.46 16.65 20.21 12.04 20.21C10.56 20.21 9.14 19.83 7.89 19.11L7.55 18.93L4.44 19.8L5.33 16.78L5.15 16.44C4.38 15.09 4.00 13.57 4.00 11.97C4.00 7.43 7.63 3.67 12.04 3.67M9.23 7.53C9.07 7.53 8.81 7.59 8.61 7.9C8.41 8.21 7.81 8.78 7.81 9.84C7.81 10.9 8.63 11.92 8.79 12.11C8.95 12.31 10.16 14.11 11.96 14.82C13.76 15.54 14.34 15.36 14.73 15.3C15.12 15.24 16.03 14.73 16.22 14.19C16.42 13.65 16.42 13.2 16.32 13.04C16.22 12.88 16.06 12.78 15.82 12.66C15.58 12.54 14.53 12.04 14.33 11.96C14.13 11.88 13.99 11.82 13.85 12.06C13.71 12.3 13.28 12.8 13.14 12.96C13 13.12 12.86 13.16 12.62 13.04C12.38 12.92 11.69 12.69 10.84 11.95C10.15 11.35 9.68 10.6 9.54 10.34C9.4 10.08 9.53 9.94 9.65 9.82C9.77 9.7 9.93 9.5 10.09 9.34C10.25 9.18 10.31 9.04 10.45 8.8C10.59 8.56 10.53 8.38 10.43 8.22C10.33 8.06 9.83 7.53 9.63 7.53H9.23Z"/></svg>
                     WhatsApp
                 </a>
                 <button id="btn-vcard" class="action-btn">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Guardar
                 </button>
             </div>
@@ -454,16 +451,16 @@
             <!-- Fila Horizontal de Redes Sociales -->
             <div class="social-icons-row">
                 <a href="https://www.facebook.com/tu_pagina" target="_blank" title="Facebook">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12Z" clip-rule="evenodd"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12Z" clip-rule="evenodd"/></svg>
                 </a>
                 <a href="https://www.instagram.com/tu_perfil" target="_blank" title="Instagram">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 0 1 1.772 1.153 4.902 4.902 0 0 1 1.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 0 1-1.153 1.772 4.902 4.902 0 0 1-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 0 1-1.772-1.153 4.902 4.902 0 0 1-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049 1.064.218-1.791.465-2.427a4.902 4.902 0 0 1 1.153-1.772A4.902 4.902 0 0 1 6.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2Z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm4.5-9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" clip-rule="evenodd"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 0 1 1.772 1.153 4.902 4.902 0 0 1 1.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 0 1-1.153 1.772 4.902 4.902 0 0 1-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 0 1-1.772-1.153 4.902 4.902 0 0 1-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049 1.064.218-1.791.465-2.427a4.902 4.902 0 0 1 1.153-1.772A4.902 4.902 0 0 1 6.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2Z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm4.5-9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" clip-rule="evenodd"/></svg>
                 </a>
                 <a href="https://www.linkedin.com/in/tu_perfil" target="_blank" title="LinkedIn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
                 </a>
                 <a href="https://www.youtube.com/tu_canal" target="_blank" title="YouTube">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </a>
             </div>
 
@@ -471,42 +468,42 @@
             <div class="grid-actions">
 
                 <button onclick="openModal('modal-services')" class="social-btn" title="Servicios">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                     <span class="social-btn-label">Servicios</span>
                 </button>
 
                 <button onclick="openModal('modal-benefits')" class="social-btn" title="Beneficios">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     <span class="social-btn-label">Beneficios</span>
                 </button>
 
                 <button onclick="openModal('modal-gallery')" class="social-btn" title="Galería">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                     <span class="social-btn-label">Galería</span>
                 </button>
 
                 <button onclick="openModal('modal-testimonials')" class="social-btn" title="Testimonios">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     <span class="social-btn-label">Testimonios</span>
                 </button>
 
                 <a href="tel:+573125580886" class="social-btn" title="Llamar">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     <span class="social-btn-label">Llamar</span>
                 </a>
 
                 <button onclick="openModal('modal-coverage')" class="social-btn" title="Cobertura">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     <span class="social-btn-label">Cobertura</span>
                 </button>
 
                 <button id="btn-share" class="social-btn" title="Compartir">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                     <span class="social-btn-label">Compartir</span>
                 </button>
 
                 <button onclick="openModal('modal-qr')" class="social-btn" title="Código QR">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                     <span class="social-btn-label">Código QR</span>
                 </button>
 
@@ -525,7 +522,7 @@
 
         <!-- Pie de Marca Mandatory Konfío Zinc -->
         <div class="brand-footer">
-            Creado por <strong style="color: var(--navy);">KONFÍO ZINC</strong> — Todos los derechos reservados
+            Creado por <strong style="color: var(--navy);">KONFÍO ZINC</strong> — Todos los derechos reservados[cite: 1]
         </div>
 
         <!-- MODALES -->
@@ -537,7 +534,7 @@
                     <h2 class="modal-title">Servicios Contables</h2>
                     <button class="modal-close" onclick="closeModal('modal-services')">✕</button>
                 </div>
-                <div style="padding: 14px; overflow-y: auto;">
+                <div style="padding: 12px; overflow-y: auto;">
                     <div class="info-card">
                         <strong style="color: var(--navy);">Declaración de Renta</strong>
                         <p style="color: #4b5563; margin-top: 2px;">Personas naturales y jurídicas con optimización legal de impuestos.</p>
@@ -565,7 +562,7 @@
                     <h2 class="modal-title">¿Por qué elegirme?</h2>
                     <button class="modal-close" onclick="closeModal('modal-benefits')">✕</button>
                 </div>
-                <div style="padding: 14px; overflow-y: auto;">
+                <div style="padding: 12px; overflow-y: auto;">
                     <div class="info-card">
                         <strong style="color: var(--navy);">✔ Atención 100% Virtual</strong>
                         <p style="color: #4b5563; margin-top: 2px;">Trámites sin filas ni desplazamientos desde la comodidad de tu hogar u oficina.</p>
@@ -589,7 +586,7 @@
                     <h2 class="modal-title">Galería & Certificaciones</h2>
                     <button class="modal-close" onclick="closeModal('modal-gallery')">✕</button>
                 </div>
-                <div style="padding: 14px; text-align: center;">
+                <div style="padding: 12px; text-align: center;">
                     <div class="carousel-box">
                         <div class="carousel-item active"><img src="assets/img/logo.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x300/0A1F44/C9972E?text=Asesoria+Contable';" alt="Servicio 1"></div>
                         <div class="carousel-item"><img src="assets/img/perfil.jpg" onerror="this.onerror=null;this.src='https://placehold.co/400x300/0A1F44/C9972E?text=Declaracion+de+Renta';" alt="Servicio 2"></div>
@@ -605,7 +602,7 @@
                     <h2 class="modal-title">Testimonios</h2>
                     <button class="modal-close" onclick="closeModal('modal-testimonials')">✕</button>
                 </div>
-                <div style="padding: 14px; overflow-y: auto;">
+                <div style="padding: 12px; overflow-y: auto;">
                     <div class="info-card">
                         <p style="color: #374151; font-style: italic;">"Excelente profesional. Me ayudó a presentar mi declaración de renta a tiempo y sin complicaciones."</p>
                         <strong style="color: var(--navy); font-size: 10px; display: block; margin-top: 4px;">— Carlos M., Independiente</strong>
@@ -652,7 +649,7 @@
                     <h2 class="modal-title">¿Cómo instalar en mi celular?</h2>
                     <button class="modal-close" onclick="closeModal('modal-install')">✕</button>
                 </div>
-                <div style="padding: 16px; font-size: 11px; color: #334155; line-height: 1.5;">
+                <div style="padding: 16px; font-size: 11px; color: #334155; line-height: 1.5; text-align: left;">
                     <strong style="color: var(--navy);">📱 Para iPhone (Safari):</strong><br/>
                     1. Toca el ícono Compartir en Safari.<br/>
                     2. Selecciona "Agregar a la pantalla de inicio".<br/><br/>
@@ -725,7 +722,7 @@
                 setInterval(() => {
                     slides[currentSlide].classList.remove('active');
                     currentSlide = (currentSlide + 1) % slides.length;
-                    slides[currentSlide].classList.add('active');
+                    slides[currentSlide].classList.add('image_6603f9.png');
                 }, 2800);
             }
         });
