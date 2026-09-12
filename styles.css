@@ -76,8 +76,8 @@
 
         /* Banner Gradiente Original */
         .main-bg {
-            height: 150px;
-            background: linear-gradient(180deg, rgba(10, 31, 68, 0.20), rgba(10, 31, 68, 0.55)), url('assets/img/portada.jpg') center center / cover no-repeat;
+            height: 180px;
+            background: linear-gradient(180deg, rgba(10, 31, 68, 0.10), rgba(10, 31, 68, 0.45)), url('assets/img/portada.jpg') center 25% / cover no-repeat;
             position: relative;
             flex-shrink: 0;
             border-bottom: 1px solid rgba(201, 151, 46, 0.3);
