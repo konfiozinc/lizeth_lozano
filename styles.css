@@ -76,10 +76,11 @@
 
         /* Banner Gradiente Original */
         .main-bg {
-            height: 120px;
-            background: radial-gradient(circle at 15% 20%, var(--navy-3) 0%, var(--navy) 55%, #071227 100%);
+            height: 150px;
+            background: linear-gradient(180deg, rgba(10, 31, 68, 0.20), rgba(10, 31, 68, 0.55)), url('assets/img/portada.jpg') center center / cover no-repeat;
             position: relative;
             flex-shrink: 0;
+            border-bottom: 1px solid rgba(201, 151, 46, 0.3);
         }
 
         /* Sección de Contenido Principal Original y Elegante */
