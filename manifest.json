@@ -1,0 +1,16 @@
+{
+  "name": "Lizeth Lozano | Contadora Pública",
+  "short_name": "Lizeth Lozano",
+  "description": "Servicios contables y tributarios: declaración de renta, planeación tributaria, certificados y RUT. Atención 100% virtual.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAF7EF",
+  "theme_color": "#0A1F44",
+  "lang": "es",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/apple-touch-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
