@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://konfiozinc.github.io/lizeth_lozano/" />
     <meta property="og:image" content="https://konfiozinc.github.io/lizeth_lozano/assets/img/perfil.jpg" />
     <meta property="og:locale" content="es_CO" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Lizeth Lozano | Contadora Pública" />
     <meta name="twitter:description" content="Declaración de renta, planeación tributaria, RUT y certificados. Atención 100% virtual." />
     <meta name="twitter:image" content="https://konfiozinc.github.io/lizeth_lozano/assets/img/perfil.jpg" />
@@ -166,8 +166,12 @@
         </div>
 
         <!-- PIE DE MARCA KONFÍO ZINC FIJO Y VISIBLE -->
+        <!-- KZ-QA-012 · antes era un texto corrido: al no caber en una línea, «Privacidad» saltaba
+             sola a una segunda línea desalineada. Ahora el texto y el enlace son piezas separadas
+             dentro de un flex que centra y que nunca parte «· Privacidad» por la mitad. -->
         <div class="brand-footer">
-            Creado por <strong style="color: var(--navy);">KONFÍO ZINC</strong> © <span id="anio">2025</span> — Todos los derechos reservados · <a href="privacidad.html" style="color: var(--navy); font-weight:700;">Privacidad</a>
+            <span class="brand-footer__texto">Creado por <strong>KONFÍO ZINC</strong> © <span id="anio">2025</span> — Todos los derechos reservados</span>
+            <span class="brand-footer__fin"><span class="brand-footer__sep" aria-hidden="true">·</span> <a class="brand-footer__link" href="privacidad.html">Privacidad</a></span>
         </div>
 
         <!-- MODALES -->

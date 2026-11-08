@@ -265,18 +265,41 @@
         }
 
         /* Pie de Marca Fijo Asegurado en la Base */
+        /* KZ-QA-012 · el pie se partía mal: «PRIVACIDAD» caía a una segunda línea desalineada.
+           Ahora es un flex centrado con dos piezas (texto / marca + enlace) y «· PRIVACIDAD»
+           no se rompe nunca a mitad de palabra. */
         .brand-footer {
             background: #ffffff;
             color: var(--navy);
             font-size: 8.5px;
-            text-align: center;
-            padding: 8px 4px;
+            padding: 8px 10px;
             font-weight: 800;
             letter-spacing: 0.5px;
             border-top: 1px solid #e2e8f0;
             text-transform: uppercase;
             flex-shrink: 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1px 6px;
+            text-align: center;
+            line-height: 1.5;
         }
+        .brand-footer strong { color: var(--navy); }
+        .brand-footer__texto { white-space: normal; }
+        .brand-footer__fin { white-space: nowrap; }
+        .brand-footer__sep { opacity: 0.55; }
+        .brand-footer__link {
+            color: var(--navy);
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(10, 31, 68, 0.35);
+        }
+        .brand-footer__link:hover,
+        .brand-footer__link:focus-visible { border-bottom-color: var(--navy); }
+        .brand-footer__link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
         /* Modales */
         .modal-overlay {
