@@ -207,6 +207,59 @@
         }
         .social-icons-row a:active { transform: scale(0.9); background: var(--gold); color: var(--navy); }
 
+        /* KZ-QA-013 · redes sociales y enlace de diagnóstico.
+           Dos chips (Instagram / Facebook) y una tarjeta destacada para el formulario. Todo con
+           objetivos táctiles de 44 px y sin desbordar en 375 px. */
+        .redes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .red {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 44px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.10);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+        .red svg { flex: 0 0 auto; }
+        .red:hover, .red:focus-visible { background: rgba(255, 255, 255, 0.18); border-color: var(--gold); }
+        .red:active { transform: scale(0.96); }
+        .red:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+        .diag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(201, 151, 46, 0.55);
+            background: linear-gradient(135deg, rgba(201, 151, 46, 0.20), rgba(201, 151, 46, 0.06));
+            color: #ffffff;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+        .diag:hover, .diag:focus-visible { border-color: var(--gold); background: linear-gradient(135deg, rgba(201, 151, 46, 0.30), rgba(201, 151, 46, 0.10)); }
+        .diag:active { transform: scale(0.99); }
+        .diag:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+        .diag__ico { font-size: 17px; line-height: 1; flex: 0 0 auto; }
+        .diag__txt { display: flex; flex-direction: column; gap: 1px; text-align: left; min-width: 0; }
+        .diag__txt strong { font-size: 10.5px; line-height: 1.25; }
+        .diag__txt small { font-size: 8.5px; line-height: 1.25; color: rgba(255, 255, 255, 0.78); }
+
         /* Grilla de Íconos de Accesos Original */
         .grid-actions {
             display: grid;

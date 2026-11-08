@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "ORG:Lizeth Lozano Contadora Pública",
       "TITLE:Contadora Pública",
       "TEL;TYPE=CELL:+573125580886",
+      "TEL;TYPE=WORK:+573123442562",
       "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
       "URL:" + window.location.href,
       "ADR;TYPE=WORK:;;;Bogotá;;;Colombia",
