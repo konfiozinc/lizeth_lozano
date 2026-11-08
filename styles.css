@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
         
         :root {
             --navy: #0A1F44;
@@ -340,6 +340,19 @@
             line-height: 1.5;
         }
         .brand-footer strong { color: var(--navy); }
+        /* KZ-QA-014 · el crédito de la agencia es un enlace: se subraya para que se vea pulsable
+           sin romper el reparto del pie (hereda el tamaño y el color de la marca). */
+        .brand-footer__marca {
+            color: var(--navy);
+            white-space: nowrap;
+            font-weight: 800;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1px;
+        }
+        .brand-footer__marca:hover,
+        .brand-footer__marca:focus-visible { text-decoration-thickness: 2px; }
+        .brand-footer__marca:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
         .brand-footer__texto { white-space: normal; }
         .brand-footer__fin { white-space: nowrap; }
         .brand-footer__sep { opacity: 0.55; }
