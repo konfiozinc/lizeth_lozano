@@ -93,103 +93,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCopiar = document.getElementById('btn-copiar');
   if (btnCopiar) btnCopiar.addEventListener('click', () => copiar(window.location.href));
 
-  /* Guardar contacto (vCard) */
-  /* KZ-QA-012 · el campo ADR estaba mal armado («ADR:;;Colombia;;;;Colombia» ponía «Colombia» como
-     calle Y como país). Se corrigió y se completaron correo y ciudad.
-     KZ-QA-015 · el archivo se descargaba bien pero el teléfono lo abría como texto porque la línea
-     NOTE pasaba de 75 octetos SIN plegar: eso incumple RFC 2425/2426 y los parsers estrictos
-     rechazan el archivo entero. Ahora:
-       · todas las líneas se pliegan a 75 octetos, con continuación empezando por un espacio;
-       · las propiedades de texto declaran CHARSET=UTF-8 (así los acentos se leen bien en Android
-         antiguo, sin necesidad de BOM);
-       · NO se pone BOM: el estándar dice que el archivo empieza en BEGIN:VCARD, y un BOM delante
-         hace que los parsers estrictos no reconozcan esa primera línea;
-       · se añaden PRODID y REV (el REV evita que el teléfono duplique el contacto al reimportarlo);
-       · los saltos de línea son CRLF, como exige la norma. */
-  const plegarVcard = (linea) => {
-    const codificador = new TextEncoder();
-    const partes = [];
-    let actual = "";
-    let octetos = 0;
-    for (const caracter of linea) {
-      const bytes = codificador.encode(caracter).length;
-      if (octetos + bytes > 75) {
-        partes.push(actual);
-        actual = " " + caracter;
-        octetos = 1 + bytes;
-      } else {
-        actual += caracter;
-        octetos += bytes;
-      }
+  /* Guardar contacto: intentar abrir el editor de Contactos en Android.
+     No descargar VCF, no abrir pestañas y no afirmar guardado automático. */
+  const btnVcard = document.getElementById('btn-vcard');
+  if (btnVcard) btnVcard.addEventListener('click', () => {
+    const nombre = 'Lizeth Lozano';
+    const telefono = '+573125580886';
+    const correo = 'dlozanor@ucentral.edu.co';
+    const android = /Android/i.test(navigator.userAgent);
+    const chrome = /Chrome\/|CriOS\//i.test(navigator.userAgent);
+    if (android && chrome) {
+      /* Intent de Android ACTION_INSERT. La disponibilidad depende del navegador
+         y de la app Contactos instalada. */
+      const intent = 'intent:#Intent;action=android.intent.action.INSERT;' +
+        'type=vnd.android.cursor.dir/contact;' +
+        'S.name=' + encodeURIComponent(nombre) + ';' +
+        'S.phone=' + encodeURIComponent(telefono) + ';' +
+        'S.email=' + encodeURIComponent(correo) + ';end';
+      window.location.href = intent;
+      return;
     }
-    partes.push(actual);
-    return partes.join("\r\n");
-  };
 
-  document.getElementById('btn-vcard').addEventListener('click', () => {
-    /* URL canónica de la tarjeta (no la de la barra de direcciones), para que el contacto no
-       guarde un enlace con parámetros. */
-    const canonica = (document.querySelector('link[rel="canonical"]') || {}).href || window.location.href;
-    const ahora = new Date();
-    const sello = ahora.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    const propiedades = [
-      "BEGIN:VCARD",
-      "VERSION:3.0",
-      "PRODID:-//KONFIO ZINC//Tarjeta digital//ES",
-      "N;CHARSET=UTF-8:Lozano;Lizeth;;;",
-      "FN;CHARSET=UTF-8:Lizeth Lozano",
-      "ORG;CHARSET=UTF-8:Lizeth Lozano Contadora Pública",
-      "TITLE;CHARSET=UTF-8:Contadora Pública",
-      "TEL;TYPE=CELL:+573125580886",
-      "TEL;TYPE=WORK:+573123442562",
-      "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
-      "URL:" + canonica,
-      "ADR;TYPE=WORK;CHARSET=UTF-8:;;;Bogotá;;;Colombia",
-      "NOTE;CHARSET=UTF-8:Declaración de renta, planeación tributaria, RUT, certificados de ingresos, asesoría contable. Atención 100% virtual.",
-      "REV:" + sello,
-      "END:VCARD"
-    ];
-    const vCardData = propiedades.map(plegarVcard).join("\r\n");
-
-    /* KZ-QA-016 · nombre de archivo dinámico.
-       Con un nombre fijo, al pulsar «Guardar» por segunda vez Chrome en Android mostraba el diálogo
-       nativo «¿Deseas volver a descargar el archivo?», que confunde. Ahora el archivo lleva la fecha
-       y, si se repite ese mismo día, un número de copia: cada descarga tiene un nombre nuevo, así que
-       la descarga es directa y sin preguntas. El contador vive en sessionStorage (se reinicia al
-       cerrar la pestaña) y si el navegador lo bloquea, sigue funcionando con la fecha sola. */
-    const dosDigitos = (n) => String(n).padStart(2, '0');
-    const fecha = String(ahora.getFullYear()) + dosDigitos(ahora.getMonth() + 1) + dosDigitos(ahora.getDate());
-    let copia = 1;
-    try {
-      copia = (parseInt(sessionStorage.getItem('kz-vcf-descargas') || '0', 10) || 0) + 1;
-      sessionStorage.setItem('kz-vcf-descargas', String(copia));
-    } catch (e) { copia = 1; }
-    const nombreArchivo = 'Lizeth_Lozano_Contacto_' + fecha + (copia > 1 ? '_' + copia : '') + '.vcf';
-
-    const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = nombreArchivo;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1200);
-
-    /* KZ-QA-016 · confirmación visual: el botón lo dice y además sale el aviso, para que nadie
-       vuelva a pulsar pensando que no pasó nada. */
-    const boton = document.getElementById('btn-vcard');
-    if (boton) {
-      if (!boton.dataset.textoOriginal) boton.dataset.textoOriginal = boton.innerHTML;
-      clearTimeout(boton._kzAviso);
-      boton.innerHTML = '✅ ¡Contacto descargado!';
-      boton.setAttribute('aria-live', 'polite');
-      boton._kzAviso = setTimeout(() => {
-        boton.innerHTML = boton.dataset.textoOriginal;
-        boton.removeAttribute('aria-live');
-      }, 3000);
+    /* En iOS y otros navegadores no existe API web universal para insertar
+       un contacto directamente. Mostrar datos sin descargar archivos. */
+    let panel = document.getElementById('contacto-alternativo');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'contacto-alternativo';
+      panel.setAttribute('role', 'dialog');
+      panel.setAttribute('aria-modal', 'true');
+      panel.setAttribute('aria-label', 'Guardar contacto de Lizeth Lozano');
+      panel.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#000b;display:flex;align-items:center;justify-content:center;padding:18px';
+      panel.innerHTML = '<div style="background:#fff;color:#13284c;border-radius:18px;padding:24px;max-width:360px;width:100%;font:16px system-ui">' +
+        '<h2 style="margin:0 0 12px;font-size:21px">Contacto de Lizeth Lozano</h2>' +
+        '<p>Tu navegador no permite abrir directamente el editor de contactos. Puedes copiar los datos y guardarlos en tu agenda.</p>' +
+        '<p><strong>Teléfono:</strong> +57 312 558 0886</p>' +
+        '<p><strong>Correo:</strong> dlozanor@ucentral.edu.co</p>' +
+        '<button type="button" id="copiar-contacto" style="padding:12px;border:0;border-radius:9px;background:#d5a332;color:#111">Copiar datos</button> ' +
+        '<button type="button" id="cerrar-contacto" style="padding:12px;border:1px solid #bbb;border-radius:9px;background:#fff;color:#111">Cerrar</button></div>';
+      document.body.appendChild(panel);
+      panel.querySelector('#cerrar-contacto').addEventListener('click', () => panel.remove());
+      panel.querySelector('#copiar-contacto').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(nombre + '\\n' + telefono + '\\n' + correo);
+          showToast('Datos copiados. Guárdalos desde Contactos.');
+        } catch (_) { showToast('Copia el teléfono y correo mostrados.'); }
+      });
     }
-    showToast('Contacto descargado · revisa tu carpeta de Descargas');
   });
 
   /* Carrusel de la galería */
