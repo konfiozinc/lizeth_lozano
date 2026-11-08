@@ -95,9 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* Guardar contacto (vCard) */
   /* KZ-QA-012 · el .vcf tenía el campo ADR mal armado: «ADR:;;Colombia;;;;Colombia» ponía
-     «Colombia» como calle Y como país. Se corrige a la forma de la norma y se añaden el nombre
-     estructurado (N) y la URL de la tarjeta. El correo (EMAIL) no se puede poner todavía: la
-     clienta no lo ha facilitado y no se inventa; cuando lo dé, va como una línea más. */
+     «Colombia» como calle Y como país. Se corrige a la forma de la norma y se completan los datos
+     que la clienta facilitó el 2026-11-08: correo y ciudad (Bogotá). El nombre estructurado (N) y la
+     URL de la tarjeta también van incluidos. */
   document.getElementById('btn-vcard').addEventListener('click', () => {
     const vCardData = [
       "BEGIN:VCARD", "VERSION:3.0",
@@ -106,8 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
       "ORG:Lizeth Lozano Contadora Pública",
       "TITLE:Contadora Pública",
       "TEL;TYPE=CELL:+573125580886",
+      "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
       "URL:" + window.location.href,
-      "ADR;TYPE=WORK:;;;;;;Colombia",
+      "ADR;TYPE=WORK:;;;Bogotá;;;Colombia",
       "NOTE:Declaración de renta, planeación tributaria, RUT, certificados de ingresos, asesoría contable. Atención 100% virtual.",
       "END:VCARD"
     ].join("\r\n");
