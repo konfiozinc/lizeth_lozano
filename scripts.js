@@ -130,7 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     /* URL canónica de la tarjeta (no la de la barra de direcciones), para que el contacto no
        guarde un enlace con parámetros. */
     const canonica = (document.querySelector('link[rel="canonical"]') || {}).href || window.location.href;
-    const sello = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const ahora = new Date();
+    const sello = ahora.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const propiedades = [
       "BEGIN:VCARD",
       "VERSION:3.0",
@@ -149,16 +150,46 @@ document.addEventListener('DOMContentLoaded', () => {
       "END:VCARD"
     ];
     const vCardData = propiedades.map(plegarVcard).join("\r\n");
+
+    /* KZ-QA-016 · nombre de archivo dinámico.
+       Con un nombre fijo, al pulsar «Guardar» por segunda vez Chrome en Android mostraba el diálogo
+       nativo «¿Deseas volver a descargar el archivo?», que confunde. Ahora el archivo lleva la fecha
+       y, si se repite ese mismo día, un número de copia: cada descarga tiene un nombre nuevo, así que
+       la descarga es directa y sin preguntas. El contador vive en sessionStorage (se reinicia al
+       cerrar la pestaña) y si el navegador lo bloquea, sigue funcionando con la fecha sola. */
+    const dosDigitos = (n) => String(n).padStart(2, '0');
+    const fecha = String(ahora.getFullYear()) + dosDigitos(ahora.getMonth() + 1) + dosDigitos(ahora.getDate());
+    let copia = 1;
+    try {
+      copia = (parseInt(sessionStorage.getItem('kz-vcf-descargas') || '0', 10) || 0) + 1;
+      sessionStorage.setItem('kz-vcf-descargas', String(copia));
+    } catch (e) { copia = 1; }
+    const nombreArchivo = 'Lizeth_Lozano_Contacto_' + fecha + (copia > 1 ? '_' + copia : '') + '.vcf';
+
     const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Lizeth_Lozano.vcf';
+    a.download = nombreArchivo;
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1200);
-    showToast('Contacto guardado');
+
+    /* KZ-QA-016 · confirmación visual: el botón lo dice y además sale el aviso, para que nadie
+       vuelva a pulsar pensando que no pasó nada. */
+    const boton = document.getElementById('btn-vcard');
+    if (boton) {
+      if (!boton.dataset.textoOriginal) boton.dataset.textoOriginal = boton.innerHTML;
+      clearTimeout(boton._kzAviso);
+      boton.innerHTML = '✅ ¡Contacto descargado!';
+      boton.setAttribute('aria-live', 'polite');
+      boton._kzAviso = setTimeout(() => {
+        boton.innerHTML = boton.dataset.textoOriginal;
+        boton.removeAttribute('aria-live');
+      }, 3000);
+    }
+    showToast('Contacto descargado · revisa tu carpeta de Descargas');
   });
 
   /* Carrusel de la galería */
