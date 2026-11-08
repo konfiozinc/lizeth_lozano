@@ -12,12 +12,19 @@
     <meta property="og:title" content="Lizeth Lozano | Contadora Pública" />
     <meta property="og:description" content="Declaración de renta, planeación tributaria, RUT y certificados. Atención 100% virtual en toda Colombia." />
     <meta property="og:url" content="https://konfiozinc.github.io/lizeth_lozano/" />
-    <meta property="og:image" content="https://konfiozinc.github.io/lizeth_lozano/assets/img/perfil.jpg" />
+    <!-- KZ-QA-013 · imagen Open Graph propia de 1200×630 (antes se compartía la foto cuadrada de
+         perfil). Se compone con su foto y su paleta; lleva su nombre, su cargo y sus servicios. -->
+    <meta property="og:image" content="https://konfiozinc.github.io/lizeth_lozano/assets/img/og-lizeth.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Lizeth Lozano, contadora pública: declaración de renta, planeación tributaria, RUT y certificados" />
     <meta property="og:locale" content="es_CO" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Lizeth Lozano | Contadora Pública" />
     <meta name="twitter:description" content="Declaración de renta, planeación tributaria, RUT y certificados. Atención 100% virtual." />
-    <meta name="twitter:image" content="https://konfiozinc.github.io/lizeth_lozano/assets/img/perfil.jpg" />
+    <meta name="twitter:image" content="https://konfiozinc.github.io/lizeth_lozano/assets/img/og-lizeth.jpg" />
+    <meta name="twitter:image:alt" content="Lizeth Lozano, contadora pública" />
 
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" type="image/png" href="icons/favicon-64.png" />
@@ -114,19 +121,18 @@
                     </button>
                 </div>
 
-                <!-- Redes sociales y enlace oficial · KZ-QA-013
-                     Enlaces verificados el 2026-11-08 (responden 200): Instagram y Facebook de la clienta
-                     y su formulario de diagnóstico tributario. El enlace corto de Linktree que llegó NO
-                     se publica: redirige a la portada del acortador, no a la bio de la clienta. Se añadirá
-                     cuando llegue la URL directa del Linktree. -->
+                <!-- Redes sociales y enlace oficial · KZ-QA-013 / KZ-QA-014
+                     Instagram verificado el 2026-11-08 (responde 200 y la página es un perfil real).
+                     El Facebook «lizethlozano25» que llegó NO se publica: con un navegador de verdad
+                     devuelve HTTP 400 (página de error, sin nombre ni metadatos), así que no se puede
+                     confirmar que sea el perfil de la clienta; y con un bot devuelve una página
+                     genérica, que es justo lo que vio Darwin. Mejor sin botón que con uno que lleva
+                     al perfil equivocado. Se activará cuando llegue la URL exacta (o el id numérico).
+                     El enlace corto de Linktree tampoco se publica: redirige a la portada del acortador. -->
                 <div class="redes" aria-label="Redes sociales de Lizeth Lozano">
                     <a class="red" href="https://instagram.com/lizethlozanoc" target="_blank" rel="noopener noreferrer" aria-label="Perfil de Instagram de Lizeth Lozano (se abre en una pestaña nueva)">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                         <span>Instagram</span>
-                    </a>
-                    <a class="red" href="https://www.facebook.com/lizethlozano25" target="_blank" rel="noopener noreferrer" aria-label="Perfil de Facebook de Lizeth Lozano (se abre en una pestaña nueva)">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg>
-                        <span>Facebook</span>
                     </a>
                 </div>
 
@@ -186,12 +192,14 @@
             </div>
         </div>
 
-        <!-- PIE DE MARCA KONFÍO ZINC FIJO Y VISIBLE -->
+        <!-- Pie de marca KONFÍO ZINC FIJO Y VISIBLE -->
         <!-- KZ-QA-012 · antes era un texto corrido: al no caber en una línea, «Privacidad» saltaba
              sola a una segunda línea desalineada. Ahora el texto y el enlace son piezas separadas
-             dentro de un flex que centra y que nunca parte «· Privacidad» por la mitad. -->
+             dentro de un flex que centra y que nunca parte «· Privacidad» por la mitad.
+             KZ-QA-014 · el crédito de la agencia pasa a ser un ENLACE a la tarjeta de KONFÍO ZINC
+             (estándar de la casa), subrayado para que se note que se puede pulsar. -->
         <div class="brand-footer">
-            <span class="brand-footer__texto">Creado por <strong>KONFÍO ZINC</strong> © <span id="anio">2025</span> — Todos los derechos reservados</span>
+            <span class="brand-footer__texto">Creado por <a class="brand-footer__marca" href="https://konfiozinc.github.io/card/" target="_blank" rel="noopener noreferrer">KONFÍO ZINC</a> © <span id="anio">2025</span> — Todos los derechos reservados</span>
             <span class="brand-footer__fin"><span class="brand-footer__sep" aria-hidden="true">·</span> <a class="brand-footer__link" href="privacidad.html">Privacidad</a></span>
         </div>
 
