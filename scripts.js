@@ -93,26 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCopiar = document.getElementById('btn-copiar');
   if (btnCopiar) btnCopiar.addEventListener('click', () => copiar(window.location.href));
 
-  /* Guardar contacto (vCard) */
-  /* KZ-QA-012 · el campo ADR estaba mal armado («ADR:;;Colombia;;;;Colombia» ponía «Colombia» como
-     calle Y como país). Se corrigió y se completaron correo y ciudad.
-     KZ-QA-015 · el archivo se descargaba bien pero el teléfono lo abría como texto porque la línea
-     NOTE pasaba de 75 octetos SIN plegar: eso incumple RFC 2425/2426 y los parsers estrictos
-     rechazan el archivo entero. Ahora:
-       · todas las líneas se pliegan a 75 octetos, con continuación empezando por un espacio;
-       · las propiedades de texto declaran CHARSET=UTF-8 (así los acentos se leen bien en Android
-         antiguo, sin necesidad de BOM);
-       · NO se pone BOM: el estándar dice que el archivo empieza en BEGIN:VCARD, y un BOM delante
-         hace que los parsers estrictos no reconozcan esa primera línea;
-       · se añaden PRODID y REV (el REV evita que el teléfono duplique el contacto al reimportarlo);
-       · los saltos de línea son CRLF, como exige la norma. */
+  /* Guardar contacto: compartir archivo con el selector nativo cuando sea compatible.
+     No forzar descargas ni afirmar que el contacto se guardó sin confirmación del sistema. */
   const plegarVcard = (linea) => {
-    const codificador = new TextEncoder();
+    const encoder = new TextEncoder();
     const partes = [];
-    let actual = "";
-    let octetos = 0;
+    let actual = "", octetos = 0;
     for (const caracter of linea) {
-      const bytes = codificador.encode(caracter).length;
+      const bytes = encoder.encode(caracter).length;
       if (octetos + bytes > 75) {
         partes.push(actual);
         actual = " " + caracter;
@@ -126,70 +114,62 @@ document.addEventListener('DOMContentLoaded', () => {
     return partes.join("\r\n");
   };
 
-  document.getElementById('btn-vcard').addEventListener('click', () => {
-    /* URL canónica de la tarjeta (no la de la barra de direcciones), para que el contacto no
-       guarde un enlace con parámetros. */
-    const canonica = (document.querySelector('link[rel="canonical"]') || {}).href || window.location.href;
-    const ahora = new Date();
-    const sello = ahora.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    const propiedades = [
-      "BEGIN:VCARD",
-      "VERSION:3.0",
-      "PRODID:-//KONFIO ZINC//Tarjeta digital//ES",
-      "N;CHARSET=UTF-8:Lozano;Lizeth;;;",
-      "FN;CHARSET=UTF-8:Lizeth Lozano",
-      "ORG;CHARSET=UTF-8:Lizeth Lozano Contadora Pública",
-      "TITLE;CHARSET=UTF-8:Contadora Pública",
-      "TEL;TYPE=CELL:+573125580886",
-      "TEL;TYPE=WORK:+573123442562",
-      "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
-      "URL:" + canonica,
-      "ADR;TYPE=WORK;CHARSET=UTF-8:;;;Bogotá;;;Colombia",
-      "NOTE;CHARSET=UTF-8:Declaración de renta, planeación tributaria, RUT, certificados de ingresos, asesoría contable. Atención 100% virtual.",
-      "REV:" + sello,
-      "END:VCARD"
-    ];
-    const vCardData = propiedades.map(plegarVcard).join("\r\n");
-
-    /* KZ-QA-016 · nombre de archivo dinámico.
-       Con un nombre fijo, al pulsar «Guardar» por segunda vez Chrome en Android mostraba el diálogo
-       nativo «¿Deseas volver a descargar el archivo?», que confunde. Ahora el archivo lleva la fecha
-       y, si se repite ese mismo día, un número de copia: cada descarga tiene un nombre nuevo, así que
-       la descarga es directa y sin preguntas. El contador vive en sessionStorage (se reinicia al
-       cerrar la pestaña) y si el navegador lo bloquea, sigue funcionando con la fecha sola. */
-    const dosDigitos = (n) => String(n).padStart(2, '0');
-    const fecha = String(ahora.getFullYear()) + dosDigitos(ahora.getMonth() + 1) + dosDigitos(ahora.getDate());
-    let copia = 1;
+  const btnVcard = document.getElementById('btn-vcard');
+  if (btnVcard) btnVcard.addEventListener('click', async () => {
+    if (btnVcard.disabled) return;
+    btnVcard.disabled = true;
     try {
-      copia = (parseInt(sessionStorage.getItem('kz-vcf-descargas') || '0', 10) || 0) + 1;
-      sessionStorage.setItem('kz-vcf-descargas', String(copia));
-    } catch (e) { copia = 1; }
-    const nombreArchivo = 'Lizeth_Lozano_Contacto_' + fecha + (copia > 1 ? '_' + copia : '') + '.vcf';
+      const canonica = (document.querySelector('link[rel="canonical"]') || {}).href || window.location.href;
+      const propiedades = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        "N:Lozano;Lizeth;;;",
+        "FN:Lizeth Lozano",
+        "ORG:Lizeth Lozano Contadora Pública",
+        "TITLE:Contadora Pública",
+        "TEL;TYPE=CELL:+573125580886",
+        "TEL;TYPE=WORK:+573123442562",
+        "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
+        "URL:" + canonica,
+        "ADR;TYPE=WORK:;;;Bogotá;;;Colombia",
+        "NOTE:Declaración de renta\\, planeación tributaria\\, RUT\\, certificados de ingresos\\, asesoría contable. Atención 100% virtual.",
+        "END:VCARD"
+      ];
+      const contenido = propiedades.map(plegarVcard).join("\r\n") + "\r\n";
+      const archivo = new File([contenido], "Lizeth_Lozano.vcf", { type: "text/vcard" });
 
-    const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = nombreArchivo;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1200);
+      /* Algunos Android permiten compartir el archivo con Contactos; otros solo muestran
+         apps de mensajería. El selector lo controla el sistema operativo. */
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [archivo] })) {
+        try {
+          await navigator.share({ files: [archivo], title: "Contacto de Lizeth Lozano" });
+          showToast("Elige Contactos para importar; confirma el guardado en tu teléfono");
+          return;
+        } catch (error) {
+          if (error && error.name === "AbortError") return;
+        }
+      }
 
-    /* KZ-QA-016 · confirmación visual: el botón lo dice y además sale el aviso, para que nadie
-       vuelva a pulsar pensando que no pasó nada. */
-    const boton = document.getElementById('btn-vcard');
-    if (boton) {
-      if (!boton.dataset.textoOriginal) boton.dataset.textoOriginal = boton.innerHTML;
-      clearTimeout(boton._kzAviso);
-      boton.innerHTML = '✅ ¡Contacto descargado!';
-      boton.setAttribute('aria-live', 'polite');
-      boton._kzAviso = setTimeout(() => {
-        boton.innerHTML = boton.dataset.textoOriginal;
-        boton.removeAttribute('aria-live');
-      }, 3000);
+      /* Alternativa explícita: no descargar sin consentimiento del visitante. */
+      const deseaDescargar = window.confirm(
+        "Tu navegador no permite abrir directamente Contactos desde esta tarjeta. " +
+        "¿Deseas descargar el archivo de contacto (.vcf)? Después ábrelo desde la app Contactos y selecciona Importar."
+      );
+      if (!deseaDescargar) return;
+      const url = URL.createObjectURL(archivo);
+      const enlace = document.createElement("a");
+      enlace.href = url;
+      enlace.download = "Lizeth_Lozano.vcf";
+      document.body.appendChild(enlace);
+      enlace.click();
+      enlace.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      showToast("Archivo .vcf descargado; impórtalo desde Contactos");
+    } catch (error) {
+      showToast("No fue posible preparar el contacto. Intenta nuevamente.");
+    } finally {
+      btnVcard.disabled = false;
     }
-    showToast('Contacto descargado · revisa tu carpeta de Descargas');
   });
 
   /* Carrusel de la galería */
