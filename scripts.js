@@ -94,25 +94,61 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnCopiar) btnCopiar.addEventListener('click', () => copiar(window.location.href));
 
   /* Guardar contacto (vCard) */
-  /* KZ-QA-012 · el .vcf tenía el campo ADR mal armado: «ADR:;;Colombia;;;;Colombia» ponía
-     «Colombia» como calle Y como país. Se corrige a la forma de la norma y se completan los datos
-     que la clienta facilitó el 2026-11-08: correo y ciudad (Bogotá). El nombre estructurado (N) y la
-     URL de la tarjeta también van incluidos. */
+  /* KZ-QA-012 · el campo ADR estaba mal armado («ADR:;;Colombia;;;;Colombia» ponía «Colombia» como
+     calle Y como país). Se corrigió y se completaron correo y ciudad.
+     KZ-QA-015 · el archivo se descargaba bien pero el teléfono lo abría como texto porque la línea
+     NOTE pasaba de 75 octetos SIN plegar: eso incumple RFC 2425/2426 y los parsers estrictos
+     rechazan el archivo entero. Ahora:
+       · todas las líneas se pliegan a 75 octetos, con continuación empezando por un espacio;
+       · las propiedades de texto declaran CHARSET=UTF-8 (así los acentos se leen bien en Android
+         antiguo, sin necesidad de BOM);
+       · NO se pone BOM: el estándar dice que el archivo empieza en BEGIN:VCARD, y un BOM delante
+         hace que los parsers estrictos no reconozcan esa primera línea;
+       · se añaden PRODID y REV (el REV evita que el teléfono duplique el contacto al reimportarlo);
+       · los saltos de línea son CRLF, como exige la norma. */
+  const plegarVcard = (linea) => {
+    const codificador = new TextEncoder();
+    const partes = [];
+    let actual = "";
+    let octetos = 0;
+    for (const caracter of linea) {
+      const bytes = codificador.encode(caracter).length;
+      if (octetos + bytes > 75) {
+        partes.push(actual);
+        actual = " " + caracter;
+        octetos = 1 + bytes;
+      } else {
+        actual += caracter;
+        octetos += bytes;
+      }
+    }
+    partes.push(actual);
+    return partes.join("\r\n");
+  };
+
   document.getElementById('btn-vcard').addEventListener('click', () => {
-    const vCardData = [
-      "BEGIN:VCARD", "VERSION:3.0",
-      "N:Lozano;Lizeth;;;",
-      "FN:Lizeth Lozano",
-      "ORG:Lizeth Lozano Contadora Pública",
-      "TITLE:Contadora Pública",
+    /* URL canónica de la tarjeta (no la de la barra de direcciones), para que el contacto no
+       guarde un enlace con parámetros. */
+    const canonica = (document.querySelector('link[rel="canonical"]') || {}).href || window.location.href;
+    const sello = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const propiedades = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      "PRODID:-//KONFIO ZINC//Tarjeta digital//ES",
+      "N;CHARSET=UTF-8:Lozano;Lizeth;;;",
+      "FN;CHARSET=UTF-8:Lizeth Lozano",
+      "ORG;CHARSET=UTF-8:Lizeth Lozano Contadora Pública",
+      "TITLE;CHARSET=UTF-8:Contadora Pública",
       "TEL;TYPE=CELL:+573125580886",
       "TEL;TYPE=WORK:+573123442562",
       "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
-      "URL:" + window.location.href,
-      "ADR;TYPE=WORK:;;;Bogotá;;;Colombia",
-      "NOTE:Declaración de renta, planeación tributaria, RUT, certificados de ingresos, asesoría contable. Atención 100% virtual.",
+      "URL:" + canonica,
+      "ADR;TYPE=WORK;CHARSET=UTF-8:;;;Bogotá;;;Colombia",
+      "NOTE;CHARSET=UTF-8:Declaración de renta, planeación tributaria, RUT, certificados de ingresos, asesoría contable. Atención 100% virtual.",
+      "REV:" + sello,
       "END:VCARD"
-    ].join("\r\n");
+    ];
+    const vCardData = propiedades.map(plegarVcard).join("\r\n");
     const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
