@@ -93,82 +93,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCopiar = document.getElementById('btn-copiar');
   if (btnCopiar) btnCopiar.addEventListener('click', () => copiar(window.location.href));
 
-  /* Guardar contacto: compartir archivo con el selector nativo cuando sea compatible.
-     No forzar descargas ni afirmar que el contacto se guardó sin confirmación del sistema. */
-  const plegarVcard = (linea) => {
-    const encoder = new TextEncoder();
-    const partes = [];
-    let actual = "", octetos = 0;
-    for (const caracter of linea) {
-      const bytes = encoder.encode(caracter).length;
-      if (octetos + bytes > 75) {
-        partes.push(actual);
-        actual = " " + caracter;
-        octetos = 1 + bytes;
-      } else {
-        actual += caracter;
-        octetos += bytes;
-      }
-    }
-    partes.push(actual);
-    return partes.join("\r\n");
-  };
-
+  /* Guardar contacto: intentar abrir el editor de Contactos en Android.
+     No descargar VCF, no abrir pestañas y no afirmar guardado automático. */
   const btnVcard = document.getElementById('btn-vcard');
-  if (btnVcard) btnVcard.addEventListener('click', async () => {
-    if (btnVcard.disabled) return;
-    btnVcard.disabled = true;
-    try {
-      const canonica = (document.querySelector('link[rel="canonical"]') || {}).href || window.location.href;
-      const propiedades = [
-        "BEGIN:VCARD",
-        "VERSION:3.0",
-        "N:Lozano;Lizeth;;;",
-        "FN:Lizeth Lozano",
-        "ORG:Lizeth Lozano Contadora Pública",
-        "TITLE:Contadora Pública",
-        "TEL;TYPE=CELL:+573125580886",
-        "TEL;TYPE=WORK:+573123442562",
-        "EMAIL;TYPE=WORK:dlozanor@ucentral.edu.co",
-        "URL:" + canonica,
-        "ADR;TYPE=WORK:;;;Bogotá;;;Colombia",
-        "NOTE:Declaración de renta\\, planeación tributaria\\, RUT\\, certificados de ingresos\\, asesoría contable. Atención 100% virtual.",
-        "END:VCARD"
-      ];
-      const contenido = propiedades.map(plegarVcard).join("\r\n") + "\r\n";
-      const archivo = new File([contenido], "Lizeth_Lozano.vcf", { type: "text/vcard" });
+  if (btnVcard) btnVcard.addEventListener('click', () => {
+    const nombre = 'Lizeth Lozano';
+    const telefono = '+573125580886';
+    const correo = 'dlozanor@ucentral.edu.co';
+    const android = /Android/i.test(navigator.userAgent);
+    const chrome = /Chrome\/|CriOS\//i.test(navigator.userAgent);
+    if (android && chrome) {
+      /* Intent de Android ACTION_INSERT. La disponibilidad depende del navegador
+         y de la app Contactos instalada. */
+      const intent = 'intent:#Intent;action=android.intent.action.INSERT;' +
+        'type=vnd.android.cursor.dir/contact;' +
+        'S.name=' + encodeURIComponent(nombre) + ';' +
+        'S.phone=' + encodeURIComponent(telefono) + ';' +
+        'S.email=' + encodeURIComponent(correo) + ';end';
+      window.location.href = intent;
+      return;
+    }
 
-      /* Algunos Android permiten compartir el archivo con Contactos; otros solo muestran
-         apps de mensajería. El selector lo controla el sistema operativo. */
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [archivo] })) {
+    /* En iOS y otros navegadores no existe API web universal para insertar
+       un contacto directamente. Mostrar datos sin descargar archivos. */
+    let panel = document.getElementById('contacto-alternativo');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'contacto-alternativo';
+      panel.setAttribute('role', 'dialog');
+      panel.setAttribute('aria-modal', 'true');
+      panel.setAttribute('aria-label', 'Guardar contacto de Lizeth Lozano');
+      panel.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#000b;display:flex;align-items:center;justify-content:center;padding:18px';
+      panel.innerHTML = '<div style="background:#fff;color:#13284c;border-radius:18px;padding:24px;max-width:360px;width:100%;font:16px system-ui">' +
+        '<h2 style="margin:0 0 12px;font-size:21px">Contacto de Lizeth Lozano</h2>' +
+        '<p>Tu navegador no permite abrir directamente el editor de contactos. Puedes copiar los datos y guardarlos en tu agenda.</p>' +
+        '<p><strong>Teléfono:</strong> +57 312 558 0886</p>' +
+        '<p><strong>Correo:</strong> dlozanor@ucentral.edu.co</p>' +
+        '<button type="button" id="copiar-contacto" style="padding:12px;border:0;border-radius:9px;background:#d5a332;color:#111">Copiar datos</button> ' +
+        '<button type="button" id="cerrar-contacto" style="padding:12px;border:1px solid #bbb;border-radius:9px;background:#fff;color:#111">Cerrar</button></div>';
+      document.body.appendChild(panel);
+      panel.querySelector('#cerrar-contacto').addEventListener('click', () => panel.remove());
+      panel.querySelector('#copiar-contacto').addEventListener('click', async () => {
         try {
-          await navigator.share({ files: [archivo], title: "Contacto de Lizeth Lozano" });
-          showToast("Elige Contactos para importar; confirma el guardado en tu teléfono");
-          return;
-        } catch (error) {
-          if (error && error.name === "AbortError") return;
-        }
-      }
-
-      /* Alternativa explícita: no descargar sin consentimiento del visitante. */
-      const deseaDescargar = window.confirm(
-        "Tu navegador no permite abrir directamente Contactos desde esta tarjeta. " +
-        "¿Deseas descargar el archivo de contacto (.vcf)? Después ábrelo desde la app Contactos y selecciona Importar."
-      );
-      if (!deseaDescargar) return;
-      const url = URL.createObjectURL(archivo);
-      const enlace = document.createElement("a");
-      enlace.href = url;
-      enlace.download = "Lizeth_Lozano.vcf";
-      document.body.appendChild(enlace);
-      enlace.click();
-      enlace.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 10000);
-      showToast("Archivo .vcf descargado; impórtalo desde Contactos");
-    } catch (error) {
-      showToast("No fue posible preparar el contacto. Intenta nuevamente.");
-    } finally {
-      btnVcard.disabled = false;
+          await navigator.clipboard.writeText(nombre + '\\n' + telefono + '\\n' + correo);
+          showToast('Datos copiados. Guárdalos desde Contactos.');
+        } catch (_) { showToast('Copia el teléfono y correo mostrados.'); }
+      });
     }
   });
 
